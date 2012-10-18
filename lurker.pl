@@ -26,8 +26,12 @@ $lurkchannels->{'#csc-test'} = "yes";
 sub lurk_cmd {
   my($data, $server, $win_item) = @_;
   if($win_item) {
+    if( $lurkchannels->{$win_item->{name}} ) {
+      $win_item->print("Already lurking in " . $win_item->{name});
+    } else {
+      $win_item->print("Now lurking in " . $win_item->{name});
+    }
     $lurkchannels->{$win_item->{name}} = "yes";
-    $win_item->print("Now lurking in " . $win_item->{name});
   } else {
     print "No window.";
   }
@@ -38,8 +42,12 @@ Irssi::command_bind('lurk', 'lurk_cmd');
 sub unlurk_cmd {
   my($data, $server, $win_item) = @_;
   if($win_item) {
+    if( $lurkchannels->{$win_item->{name}} ) {
+      $win_item->print("Stopped lurking in " . $win_item->{name});
+    } else {
+      $win_item->print("Was not lurking in " . $win_item->{name});
+    }
     delete $lurkchannels->{$win_item->{name}};
-    $win_item->print("Not lurking in " . $win_item->{name});
   } else {
     print "No window...";
   }

@@ -55,6 +55,21 @@ sub unlurk_cmd {
 
 Irssi::command_bind('unlurk', 'unlurk_cmd');
 
+sub lurkingp_cmd {
+  my($data, $server, $win_item) = @_;
+  if($win_item) {
+    if( $lurkchannels->{$win_item->{name}} ) {
+      $win_item->print("Lurking in " . $win_item->{name});
+    } else {
+      $win_item->print("Not lurking in " . $win_item->{name});
+    }
+  } else {
+    print "No window...";
+  }
+}
+
+Irssi::command_bind('lurkingp', 'lurkingp_cmd');
+
 sub lurkhandle {
   my($text, $server, $win_item) = @_;
   if($win_item && ($text =~ m/win\s*\d+/ || $text =~ m/^(f|j|k|\s|~|>|\.)+$/ )) {

@@ -1,2 +1,10 @@
 Prevents some types of accidental messages from being sent on IRC, to improve
 lurking.
+
+To lurk in a channel, run /lurk, which prevents you sending messages from that
+window, and use /unlurk to message that window again.
+
+The script always blocks messages that match three regular expressions:
+Irssi window switch commands: /win\s*\d+/
+Vim movement commands and noise: /^(f|j|k|\s|~|>|\.)+$/
+Vim quit commands: /^(:wq|:w|:q|:WQ|:Wq)/

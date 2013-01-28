@@ -20,6 +20,15 @@ $VERSION = '1.00';
 
 Irssi::signal_add_first 'send text', 'lurkhandle';
 
+sub chanid {
+  my($win_item) = @_;
+  my $name = $win_item->{name};
+  my $where= $win_item->{server}->{address};
+  my $key = $name . ":" . $where;
+  return $key;
+}
+
+
 my $lurkchannels = {};
 $lurkchannels->{'#csc-test'} = "yes";
 
@@ -72,11 +81,13 @@ Irssi::command_bind('lurkingp', 'lurkingp_cmd');
 
 sub lurkhandle {
   my($text, $server, $win_item) = @_;
-  if($win_item && ($text =~ m/win\s*\d+/ || $text =~ m/^(f|j|k|\s|~|>|\.)+$/ )) {
+  if($win_item && ($text =~ m/w\/*i\/*n\s*\d+/ 
+                   || $text =~ m/^(f|j|k|\s|~|>|\.)+$/ 
+                   || $text =~ m/^(:wq|:w|:q|:WQ|:Wq)/)) {
     $win_item->print("Spamblock: " . $text);
     Irssi::signal_stop();
   } else {
-    if( $lurkchannels->{$win_item->{name}} ) {
+    if($win_item && $lurkchannels->{$win_item->{name}} ) {
       $win_item->print("Lurkblock: " . $text);
       Irssi::signal_stop();
     } else {

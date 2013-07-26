@@ -81,8 +81,9 @@ Irssi::command_bind('lurkingp', 'lurkingp_cmd');
 
 sub lurkhandle {
   my($text, $server, $win_item) = @_;
-  if($win_item && ($text =~ m/w\/*i\/*n\s*\d+/ 
-                   || $text =~ m/^(f|j|k|\s|~|>|\.)+$/ 
+  if($win_item && ($text =~ m/w\/*i\/*n\s*\d+/
+                   || $text =~ m/\/\d+$/
+                   || $text =~ m/^(f|\s|~|>|\.)+$/
                    || $text =~ m/^(:wq|:w|:q|:WQ|:Wq)/)) {
     $win_item->print("Spamblock: " . $text);
     Irssi::signal_stop();

@@ -8,7 +8,7 @@ use vars qw($VERSION %IRSSI);
 use Irssi;
 use Data::Dumper;
 
-$VERSION = '1.00';
+$VERSION = '1.1';
 
 %IRSSI = (
   authors => 'Matthew McPherrin',
@@ -31,6 +31,17 @@ sub chanid {
 
 my $lurkchannels = {};
 $lurkchannels->{'#csc-test'} = "yes";
+
+my %config;
+
+Irssi::settings_add_bool('lurk', 'lurk_filter_spam' => 1);
+$config{'lurk_filter_spam'} = Irssi::settings_get_bool('lurk_filter_spam');
+
+Irssi::signal_add(
+  'setup changed' => sub {
+    $config{'lurk_filter_spam'} = Irssi::settings_get_bool('lurk_filter_spam');
+  }
+);
 
 sub lurk_cmd {
   my($data, $server, $win_item) = @_;
@@ -81,10 +92,11 @@ Irssi::command_bind('lurkingp', 'lurkingp_cmd');
 
 sub lurkhandle {
   my($text, $server, $win_item) = @_;
-  if($win_item && ($text =~ m/w\/*i\/*n\s*\d+/
-                   || $text =~ m/\/\d+$/
-                   || $text =~ m/^(f|\s|~|>|\.)+$/
-                   || $text =~ m/^(:wq|:w|:q|:WQ|:Wq)/)) {
+  if($win_item && $config{'lurk_filter_spam'} &&
+    ($text =~ m/w\/*i\/*n\s*\d+/
+     || $text =~ m/\/\d+$/
+     || $text =~ m/^(f|\s|~|>|\.)+$/
+     || $text =~ m/^(:wq|:w|:q|:WQ|:Wq)/)) {
     $win_item->print("Spamblock: " . $text);
     Irssi::signal_stop();
   } else {

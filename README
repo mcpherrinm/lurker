@@ -4,7 +4,8 @@ lurking.
 To lurk in a channel, run /lurk, which prevents you sending messages from that
 window, and use /unlurk to message that window again.
 
-The script always blocks messages that match three regular expressions:
+If lurk_filter_spam is set (default on) the script will block messages that
+match three regular expressions:
 Irssi window switch commands: /win\s*\d+/
 Vim movement commands and noise: /^(f|j|k|\s|~|>|\.)+$/
 Vim quit commands: /^(:wq|:w|:q|:WQ|:Wq)/
